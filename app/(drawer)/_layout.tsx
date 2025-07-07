@@ -50,6 +50,14 @@ export default function Layout() {
             title: "Export/Import data",
             headerShown: true,
           }}
+        /> 
+        <Drawer.Screen
+          name="settings"
+          options={{
+            drawerLabel: "Settings",
+            title: "Settings",
+            headerShown: true,
+          }}
         />
       </Drawer>
     </GestureHandlerRootView>

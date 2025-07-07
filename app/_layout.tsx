@@ -1,7 +1,7 @@
-import React, { Suspense } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { ActivityIndicator, StatusBar } from "react-native";
 
-import { Stack } from "expo-router";
+import { Stack, useRouter, usePathname } from "expo-router";
 import { SQLiteProvider } from "expo-sqlite";
 
 import { PaperProvider, MD3LightTheme } from "react-native-paper";
@@ -12,6 +12,7 @@ import {
 
 import { useRunMigration } from "@/hooks/db/migration";
 import { DATABASE_NAME } from "@/db";
+import { getPassword } from "@/lib/password";
 
 function MigrationRunner() {
   useRunMigration();
@@ -33,6 +34,34 @@ export default function RootLayout() {
       primary: paperTheme.colors.primary,
     },
   };
+
+  const router = useRouter();
+  const pathname = usePathname();
+  const [checking, setChecking] = useState(true);
+
+  useEffect(() => {
+    const checkPassword = async () => {
+      try {
+        const saved = await getPassword();
+        console.log("password saved:", saved);
+
+        // Avoid redirect loop by checking current path
+        if (saved && pathname !== "/password") {
+          router.replace("/password");
+        }
+      } catch (err) {
+        console.error("Failed to check password:", err);
+      } finally {
+        setChecking(false);
+      }
+    };
+
+    checkPassword();
+  }, [router, pathname]);
+
+  if (checking) {
+    return <ActivityIndicator size="large" style={{ flex: 1 }} />;
+  }
 
   return (
     <Suspense fallback={<ActivityIndicator size="large" />}>
