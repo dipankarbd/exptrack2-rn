@@ -43,9 +43,7 @@ export default function RootLayout() {
     const checkPassword = async () => {
       try {
         const saved = await getPassword();
-        console.log("password saved:", saved);
 
-        // Avoid redirect loop by checking current path
         if (saved && pathname !== "/password") {
           router.replace("/password");
         }
@@ -57,7 +55,8 @@ export default function RootLayout() {
     };
 
     checkPassword();
-  }, [router, pathname]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   if (checking) {
     return <ActivityIndicator size="large" style={{ flex: 1 }} />;
