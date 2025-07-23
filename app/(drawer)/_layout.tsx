@@ -20,6 +20,14 @@ export default function Layout() {
           }}
         />
         <Drawer.Screen
+          name="summary"
+          options={{
+            drawerLabel: "Summary",
+            title: "Summary",
+            headerShown: true,
+          }}
+        /> 
+        <Drawer.Screen
           name="transactions"
           options={{
             drawerLabel: "Transactions",
@@ -50,7 +58,7 @@ export default function Layout() {
             title: "Export/Import data",
             headerShown: true,
           }}
-        /> 
+        />
         <Drawer.Screen
           name="settings"
           options={{
